@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Calculadora de Amassamento | Piova</title>
+  <meta name="theme-color" content="#007BFF">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="logo192.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(() => {
+          console.log('Service Worker registrado com sucesso!');
+        }).catch(error => {
+          console.log('Erro ao registrar o Service Worker:', error);
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <h1>Calculadora de Amassamento</h1>
+  <!-- Conteúdo do app vai aqui -->
+  <button onclick="alert('Calculando...')">Calcular</button>
+</body>
+</html>

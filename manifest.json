@@ -1,0 +1,16 @@
+
+{
+  "name": "Calculadora de Amassamento | Piova",
+  "short_name": "Piova Calc",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#e6f2ff",
+  "theme_color": "#007BFF",
+  "icons": [
+    {
+      "src": "logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
