@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Calculadora de Amassamento | Piova</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding-bottom: 80px; /* Espaço para o botão fixo */
+      background: #e6f2ff;
+    }
+
+    .container {
+      max-width: 100%;
+      padding: 20px;
+      margin: auto;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      color: #004080;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #003366;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #resultado {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    ul {
+      padding-left: 20px;
+      line-height: 2;
+    }
+
+    .whatsapp-bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #25D366;
+      text-align: center;
+      padding: 15px 0;
+      z-index: 9999;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .whatsapp-bottom a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 18px;
+      display: inline-block;
+    }
+
+    @media (min-width: 600px) {
+      .container {
+        max-width: 600px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora de Amassamento | Piova</h1>
+
+    <label for="larguraPneu">Largura de cada pneu (cm):</label>
+    <input type="number" id="larguraPneu" step="0.1">
+
+    <label for="numPneus">Número de pneus que amassam:</label>
+    <input type="number" id="numPneus">
+
+    <label for="larguraBarra">Largura da barra de pulverização (m):</label>
+    <input type="number" id="larguraBarra" step="0.1">
+
+    <label for="area">Área da lavoura (ha):</label>
+    <input type="number" id="area" step="0.1">
+
+    <label for="produtividade">Produtividade estimada (sacas/ha):</label>
+    <input type="number" id="produtividade" step="0.1">
+
+    <label for="valorSaca">Valor da saca (R$):</label>
+    <input type="number" id="valorSaca" step="0.01">
+
+    <h2>Pulverização Tradicional</h2>
+    <label for="consumoDiesel">Consumo de diesel (litros/ha):</label>
+    <input type="number" id="consumoDiesel" step="0.01">
+
+    <label for="precoDiesel">Preço do diesel (R$/litro):</label>
+    <input type="number" id="precoDiesel" step="0.01">
+
+    <label for="custoOperacional">Outros custos operacionais (R$/ha):</label>
+    <input type="number" id="custoOperacional" step="0.01">
+
+    <h2>Quantidade de Aplicações</h2>
+    <label for="nAplic">Nº de aplicações:</label>
+    <input type="number" id="nAplic" step="0.01">
+
+    <h2>Pulverização com Drone</h2>
+    <label for="custoDrone">Custo da pulverização via drone (R$/ha):</label>
+    <input type="number" id="custoDrone" step="0.01">
+
+    <button id="btnCalcular">Calcular</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <div class="whatsapp-bottom">
+    <a href="https://wa.me/5542999903119?text=Ol%C3%A1%2C+gostaria+de+um+or%C3%A7amento+de+pulveriza%C3%A7%C3%A3o+com+drone" target="_blank">
+      📲 Solicitar orçamento via WhatsApp
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('btnCalcular').addEventListener('click', calcularAmassamento);
+    });
+
+    function calcularAmassamento() {
+      const larguraPneu = parseFloat(document.getElementById('larguraPneu').value) / 100; // convertendo cm para m
+      const numPneus = parseInt(document.getElementById('numPneus').value);
+      const larguraBarra = parseFloat(document.getElementById('larguraBarra').value);
+      const area = parseFloat(document.getElementById('area').value);
+      const produtividade = parseFloat(document.getElementById('produtividade').value);
+      const valorSaca = parseFloat(document.getElementById('valorSaca').value);
+      const consumoDiesel = parseFloat(document.getElementById('consumoDiesel').value);
+      const precoDiesel = parseFloat(document.getElementById('precoDiesel').value);
+      const custoOperacional = parseFloat(document.getElementById('custoOperacional').value);
+      const custoDrone = parseFloat(document.getElementById('custoDrone').value);
+      const nAplic = parseFloat(document.getElementById('nAplic').value);
+
+      if ([larguraPneu, numPneus, larguraBarra, area, produtividade, valorSaca, consumoDiesel, precoDiesel, custoOperacional, custoDrone, nAplic].some(isNaN)) {
+        document.getElementById('resultado').innerHTML = '<strong>Por favor, preencha todos os campos corretamente.</strong>';
+        return;
+      }
+
+      const faixaAmassada = larguraPneu * numPneus;
+      const percentualAmassamento = (faixaAmassada / larguraBarra) * 100;
+      const perdaFinanceira = percentualAmassamento * area * produtividade * valorSaca / 100;
+
+      const custoPorHaTradicional = (consumoDiesel * precoDiesel) + custoOperacional;
+      const custoTotalTradicional = custoPorHaTradicional * area;
+      const custoTotalDrone = custoDrone * area;
+      const economiaDrone = custoTotalTradicional - custoTotalDrone;
+      const retornoEvitarAmassamento = perdaFinanceira;
+      const ganhoTotalDrone = economiaDrone + retornoEvitarAmassamento;
+      const numAplicaDrone = (perdaFinanceira + (custoTotalTradicional * nAplic)) / custoTotalDrone;
+
+      document.getElementById('resultado').innerHTML = `
+        <h3>RESULTADOS</h3>
+        <ul>
+          <li><strong>Área amassada por passada:</strong> ${faixaAmassada.toFixed(2)} m</li>
+          <li><strong>Barra de Pulverização:</strong> ${larguraBarra.toFixed(2)} m</li>
+          <li><strong>Percentual de Amassamento:</strong> ${percentualAmassamento.toFixed(2)}%</li>
+          <li><strong>Custo a cada aplicação tradicional:</strong> R$ ${custoTotalTradicional.toFixed(2)}</li>
+          <li><strong>Perda estimada por amassamento:</strong> R$ ${perdaFinanceira.toFixed(2)}</li>
+          <li><strong>Custo a cada aplicação com drone:</strong> R$ ${custoTotalDrone.toFixed(2)}</li>
+          <li><strong>Nº Aplicações com drone (pagas por evitar amassamento):</strong> ${numAplicaDrone.toFixed(2)}</li>
+        </ul>
+      `;
+    }
+  </script>
+</body>
+</html>
